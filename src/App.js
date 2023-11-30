@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import BingoGrid from './components/BingoGrid';
+import bingoData from './bingoData.json';
 
 function App() {
+  const [year, setYear] = useState('2023');
+  const years = Object.keys(bingoData);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppContainer>
+      <h1>r/Fantasy Bingo Challenge</h1>
+      <YearSelector
+        value={year}
+        onChange={(e) => setYear(e.target.value)}
+      >
+        {years.map((year) => (
+          <option key={year} value={year}>
+            {year}
+          </option>
+        ))}
+      </YearSelector>
+      <BingoGrid year={year} />
+    </AppContainer>
   );
 }
 
 export default App;
+
+// Styled Components
+const AppContainer = styled.div`
+  text-align: center;
+  padding: 20px;
+`;
+
+const YearSelector = styled.select`
+  margin-bottom: 20px;
+`;
