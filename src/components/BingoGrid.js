@@ -1,14 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import bingoData from '../bingoData.json'; // Adjust the path as needed
 
-const BingoGrid = ({ year }) => {
-  const gridItems = bingoData[year]?.cells || [];
+const BingoGrid = ({ sheetId, sheet, updateCell }) => {
+//   const gridItems = bingoData[year]?.cells || [];
+    const gridItems = sheet?.cells || [];
+
+    console.log('BingoGrid sheet', sheet);
+    console.log('BingoGrid sheetId', sheetId);
 
   return (
     <Grid>
       {gridItems.map((cell, index) => (
-        <BingoCell key={index} cellId={index} cell={cell} />
+        <BingoCell 
+            key={index} 
+            cellId={cell.id} 
+            cell={cell} 
+            updateCell={updateCell} 
+        />
       ))}
     </Grid>
   );
@@ -180,35 +188,16 @@ const Checkbox = ({ className, checked, onChange }) => (
     </CheckboxContainer>
   );
 
-const BingoCell = ({ cellId, cell }) => {
+const BingoCell = ({ cellId, cell, updateCell }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [showDescription, setShowDescription] = useState(false);
 
   const [flipped, setFlipped] = useState(false);
-  const [input, setInput] = useState(() => {
-    return localStorage.getItem(`cell-${cellId}`) || '';
-  });
-  const [isHardMode, setIsHardMode] = useState(() => {
-    return localStorage.getItem(`cell-hardmode-${cellId}`) === 'true';
-  });
-
-  useEffect(() => {
-    localStorage.setItem(`cell-${cellId}`, input.trim());
-  }, [input, cellId]);
-
-  useEffect(() => {
-    localStorage.setItem(`cell-hardmode-${cellId}`, isHardMode);
-  }, [isHardMode, cellId]);
 
   const handleFlipClick = (e) => {
     e.stopPropagation();
     setFlipped(!flipped);
-  };
-
-  const handleCheckboxChange = (e) => {
-    console.log('checkbox changed', e.target.checked);
-    setIsHardMode(e.target.checked);
   };
 
 
@@ -236,9 +225,12 @@ const BingoCell = ({ cellId, cell }) => {
             >⇄</FlipIcon> {/* Flip Icon */}
             <TextArea 
                 type="text" 
-                value={input} 
+                value={cell.input} 
                 isEditing={isEditing}
-                onChange={(e) => setInput(e.target.value)} 
+                onChange={(e) => updateCell({
+                    ...cell,
+                    input: e.target.value
+                })} 
                 onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                         e.preventDefault();
@@ -250,8 +242,11 @@ const BingoCell = ({ cellId, cell }) => {
                 placeholder="Enter book name..." 
             />
             <Checkbox
-                checked={isHardMode}
-                onChange={handleCheckboxChange} // Use the handler function
+                checked={cell.isHardMode}
+                onChange={() => updateCell({
+                    ...cell,
+                    isHardMode: !cell.isHardMode,
+                }) } // Use the handler function
             />
         </CellBack>
       </Flipper>
