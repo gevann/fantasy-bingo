@@ -71,6 +71,8 @@ const BingoSheetsList = () => {
     const addSheet = (selectedKey) => {
         const newSheet = createNewSheet(selectedKey);
         setSheets({ ...sheets, [newSheet.id]: newSheet });
+        toggleSheet(newSheet.id);
+        setIsCreatingNewSheet(false);
     };
     
     const deleteSheet = (id) => {
