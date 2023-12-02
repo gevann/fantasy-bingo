@@ -12,7 +12,7 @@
 *   - View the bingo sheet (the BingoGrid component)
 */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import BingoGrid from './BingoGrid';
 import bingoData from '../bingoData.json'; // Adjust the path as needed
@@ -48,6 +48,13 @@ const BingoSheetsList = () => {
     const [sheets, setSheets] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const [isCreatingNewSheet, setIsCreatingNewSheet] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalContent, setModalContent] = useState('');   
+    const openModal = (content) => {
+      setModalContent(content);
+      setIsModalOpen(true);
+    };  
+    const closeModal = () => setIsModalOpen(false);
     
     useEffect(() => {
         const sheets = JSON.parse(localStorage.getItem('sheets')) || {};
@@ -186,8 +193,14 @@ const BingoSheetsList = () => {
                     sheetId={activeSheetId} 
                     sheet={sheets[activeSheetId]} 
                     updateCell={updateCell}
+                    onInfoClick={openModal}
                 />}
             {isCreatingNewSheet && <NewBingoSheetSelector addSheet={addSheet} />}
+            {isModalOpen && (
+                <Modal onClose={closeModal}>
+                  <p>{modalContent}</p>
+                </Modal>
+            )}
         </DisplaySheet>
         </Container>
     );
@@ -288,4 +301,88 @@ const SheetTitle = styled(({ xzvlue, isEditing, ...props }) => <textarea {...pro
     overflow-wrap: ${props => props.isEditing ? 'break-word' : 'normal'};
 `;
 
+const Modal = ({ children, onClose }) => {
+    // Use the custom hooks
+    useEscapeKey(onClose);
+    useClickOutside(onClose);
+  
+    return (
+      <ModalBackdrop onClick={onClose}>
+        <ModalContent className="modal-content" onClick={e => e.stopPropagation()}>
+          {children}
+          <CloseButton onClick={onClose}>×</CloseButton>
+        </ModalContent>
+      </ModalBackdrop>
+    );
+  };
+  
+  const ModalBackdrop = styled.div`
+    position: fixed; /* Covers the entire viewport */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  `;
+  
+  const ModalContent = styled.div`
+    color: black;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    max-width: 500px;
+  `;
+  
+  const CloseButton = styled.button`
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    /* Style your close button */
+  `;
+
+// Close modal when user presses escape key, using useRef and useEffect
+const useEscapeKey = (onEscape) => {
+    const onEscapeRef = useRef(onEscape);
+    useEffect(() => {
+      onEscapeRef.current = onEscape;
+    }, [onEscape]);
+  
+    useEffect(() => {
+      const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+          onEscapeRef.current();
+        }
+      };
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }, []);
+  };
+  
+  // Close modal when user clicks outside of it, using useRef and useEffect
+  const useClickOutside = (ref, onClickOutside) => {
+    useEffect(() => {
+      const handleClickOutside = (e) => {
+        if (ref.current && !ref.current.contains(e.target)) {
+          onClickOutside();
+        }
+      };
+  
+      // Delay the activation of the event listener
+      const timer = setTimeout(() => {
+        document.addEventListener('click', handleClickOutside);
+      }, 100); // Adjust delay as needed
+  
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener('click', handleClickOutside);
+      };
+    }, [ref, onClickOutside]);
+  };
+  
 // Path: src/components/BingoGrid.js

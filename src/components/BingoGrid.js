@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const BingoGrid = ({ sheetId, sheet, updateCell }) => {
+const BingoGrid = ({ sheetId, sheet, updateCell, onInfoClick }) => {
 //   const gridItems = bingoData[year]?.cells || [];
     const gridItems = sheet?.cells || [];
 
@@ -16,6 +16,7 @@ const BingoGrid = ({ sheetId, sheet, updateCell }) => {
             cellId={cell.id} 
             cell={cell} 
             updateCell={updateCell} 
+            onInfoClick={onInfoClick}
         />
       ))}
     </Grid>
@@ -111,6 +112,7 @@ const CellBack = styled(CellFront)`
 const CellTitle = styled.h3`
   margin: 0;
   padding: 0;
+  cursor: pointer;
 `;
 
 const InfoIcon = styled.span`
@@ -118,23 +120,6 @@ const InfoIcon = styled.span`
     margin-top: -5px;
     cursor: pointer;
     font-size: 10px;
-`;
-
-const CellDescription = styled.div`
-  display: none;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background-color: #666;
-  color: #fff;
-  padding: 10px;
-  box-sizing: border-box;
-  z-index: 10;
-
-  ${GridItem}:hover & {
-    display: block;
-  }
 `;
 
 // Styled checkbox component
@@ -188,10 +173,9 @@ const Checkbox = ({ className, checked, onChange }) => (
     </CheckboxContainer>
   );
 
-const BingoCell = ({ cellId, cell, updateCell }) => {
+const BingoCell = ({ onInfoClick, cell, updateCell }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [showDescription, setShowDescription] = useState(false);
 
   const [flipped, setFlipped] = useState(false);
 
@@ -205,12 +189,11 @@ const BingoCell = ({ cellId, cell, updateCell }) => {
     <GridItem isHovered={isHovered}>
       <Flipper flipped={flipped}>
         <CellFront>
-          <CellTitle>{cell.title}</CellTitle>
-          <InfoIcon 
-            onMouseEnter={() => setShowDescription(true)}
-            onMouseLeave={() => setShowDescription(false)}
-          >ⓘ</InfoIcon>
-          {showDescription && <CellDescription>{cell.description}</CellDescription>}
+          <CellTitle
+            onClick={() => onInfoClick(cell.description)}
+          >{cell.title}
+            <InfoIcon >ⓘ</InfoIcon>
+          </CellTitle>
           <FlipIcon 
             onClick={handleFlipClick}
             onMouseEnter={() => setIsHovered(true)}
