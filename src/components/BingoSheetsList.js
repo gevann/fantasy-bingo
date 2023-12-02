@@ -49,7 +49,8 @@ const BingoSheetsList = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [isCreatingNewSheet, setIsCreatingNewSheet] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalContent, setModalContent] = useState('');   
+    const [modalContent, setModalContent] = useState('');
+
     const openModal = (content) => {
       setModalContent(content);
       setIsModalOpen(true);
@@ -87,8 +88,7 @@ const BingoSheetsList = () => {
                 return updatedCell;
             }
             return cell;
-        }
-        );
+        });        
         const updatedSheet = { ...sheet, cells: updatedCells };
         updateSheet(updatedSheet);
     };
@@ -123,11 +123,7 @@ const BingoSheetsList = () => {
         const encodedData = queryParams.get("data");
 
         if (encodedData) {
-            console.log('Creating sheet from query param', {
-                encodedData,            
-            })
             const importedSheet = importSheetData(encodedData);
-            console.log('importedSheet', importedSheet)
             if (importedSheet && !sheetsFromStorage[importedSheet.id]) {
                 // Add the imported sheet if it doesn't already exist
                 const updatedSheets = { ...sheetsFromStorage, [importedSheet.id]: {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const BingoGrid = ({ sheetId, sheet, updateCell, onInfoClick }) => {
@@ -85,7 +85,7 @@ const TextArea = styled(({ isEditing, ...props }) => <textarea {...props} />)`
     overflow-wrap: ${props => props.isEditing ? 'break-word' : 'normal'};
 `;
 
-const CellFront = styled.div`
+const CellFront = styled(({ hasContent, ...props }) => <div {...props} />)`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -98,6 +98,7 @@ const CellFront = styled.div`
   backface-visibility: hidden;
   border-radius: 10px;
   background-color: #2b2b2b;
+  ${props => props.hasContent && `box-shadow: inset 0 0 20px -5px #fff;`}
 `;
 
 const CellBack = styled(CellFront)`
@@ -176,19 +177,32 @@ const Checkbox = ({ className, checked, onChange }) => (
 const BingoCell = ({ onInfoClick, cell, updateCell }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-
   const [flipped, setFlipped] = useState(false);
+  const hasContent = !!(cell.input?.length > 0);
 
   const handleFlipClick = (e) => {
     e.stopPropagation();
     setFlipped(!flipped);
   };
 
+  // If the user clicks outside of the cell, 
+  // flip it back over if it's flipped
+  const ref = React.useRef();
+  useClickOutside(ref, () => {
+    if (flipped) {
+      setFlipped(false);
+    }
+  });
 
   return (
-    <GridItem isHovered={isHovered}>
+    <div ref={ref}>
+    <GridItem 
+      isHovered={isHovered}
+      >
       <Flipper flipped={flipped}>
-        <CellFront>
+        <CellFront
+          hasContent={hasContent}
+        >
           <CellTitle
             onClick={() => onInfoClick(cell.description)}
           >{cell.title}
@@ -234,5 +248,28 @@ const BingoCell = ({ onInfoClick, cell, updateCell }) => {
         </CellBack>
       </Flipper>
     </GridItem>
+    </div>
   );
 };
+
+  // Flip the card back over if the user clicks outside of it
+  // if it's flipped
+  const useClickOutside = (ref, onClickOutside) => {
+    useEffect(() => {
+      const handleClickOutside = (e) => {
+        if (ref.current && !ref.current.contains(e.target)) {
+          onClickOutside();
+        }
+      };
+  
+      // Delay the activation of the event listener
+      const timer = setTimeout(() => {
+        document.addEventListener('click', handleClickOutside);
+      }, 100); // Adjust delay as needed
+  
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener('click', handleClickOutside);
+      };
+    }, [ref, onClickOutside]);
+  };
