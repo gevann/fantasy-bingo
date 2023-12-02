@@ -50,8 +50,10 @@ const BingoSheetsList = () => {
     const [isCreatingNewSheet, setIsCreatingNewSheet] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState('');
+    const [canCopy, setCanCopy] = useState(false);
 
-    const openModal = (content) => {
+    const openModal = (content, canCopy=false) => {
+      setCanCopy(canCopy);
       setModalContent(content);
       setIsModalOpen(true);
     };  
@@ -114,6 +116,8 @@ const BingoSheetsList = () => {
             const link = createShareableLink(activeSheetData);
             // Handle the link as needed (e.g., copy to clipboard, display in a modal, etc.)
             console.log(link); // For testing purposes
+            const canCopy = !!navigator.clipboard;
+            openModal(link, canCopy)
         }
     };
 
@@ -193,9 +197,7 @@ const BingoSheetsList = () => {
                 />}
             {isCreatingNewSheet && <NewBingoSheetSelector addSheet={addSheet} />}
             {isModalOpen && (
-                <Modal onClose={closeModal}>
-                  <p>{modalContent}</p>
-                </Modal>
+                <Modal onClose={closeModal} content={modalContent} canCopy={canCopy}/>
             )}
         </DisplaySheet>
         </Container>
@@ -297,20 +299,58 @@ const SheetTitle = styled(({ xzvlue, isEditing, ...props }) => <textarea {...pro
     overflow-wrap: ${props => props.isEditing ? 'break-word' : 'normal'};
 `;
 
-const Modal = ({ children, onClose }) => {
+const Modal = ({ content, onClose, canCopy }) => {
     // Use the custom hooks
     useEscapeKey(onClose);
     useClickOutside(onClose);
+
+    // Add a button to copy the link to the clipboard
   
     return (
       <ModalBackdrop onClick={onClose}>
-        <ModalContent className="modal-content" onClick={e => e.stopPropagation()}>
-          {children}
+        <ModalContent 
+          className="modal-content" 
+          onClick={e => e.stopPropagation()}
+          canCopy={canCopy}
+        >
           <CloseButton onClick={onClose}>×</CloseButton>
+          <CopiableContent
+            onClick={() => {
+              if (!canCopy) return;
+              navigator.clipboard.writeText(content);
+              alert('Copied to clipboard!');
+            }}
+            canCopy={canCopy}
+            >{content}</CopiableContent>
+          
         </ModalContent>
       </ModalBackdrop>
     );
   };
+
+  
+  const CopiableContent = styled(({ canCopy, ...props }) => <div {...props} />)`
+    position: relative;
+    cursor: default;
+    justify-content: left;
+    ${props => props.canCopy && `
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &:after {
+        content: 'Copy to clipboard';
+        position: absolute;
+        top: -20px;
+        left: 0;
+        font-size: 12px;
+        color: #fff;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+      }
+    `}
+  `;
   
   const ModalBackdrop = styled.div`
     position: fixed; /* Covers the entire viewport */
@@ -333,13 +373,26 @@ const Modal = ({ children, onClose }) => {
     border-radius: 10px;
     position: relative;
     max-width: 500px;
+    word-wrap: break-word;
+    word-break: break-all;
   `;
   
   const CloseButton = styled.button`
     position: absolute;
-    top: 10px;
-    right: 10px;
-    /* Style your close button */
+    top: -30px;
+    right: -30px;
+    border: none;
+    cursor: pointer;
+    color: black;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   `;
 
 // Close modal when user presses escape key, using useRef and useEffect
