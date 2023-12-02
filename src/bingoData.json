@@ -1,33 +1,107 @@
 {
-    "2023": {
-      "title": "Fantasy Bingo 2023",
-      "cells": [
-        { "title": "Cell 1", "description": "Description for Cell 1" },
-        { "title": "Cell 2", "description": "Description for Cell 2" },
-        { "title": "Cell 3", "description": "Description for Cell 3" },
-        { "title": "Cell 4", "description": "Description for Cell 4" },
-        { "title": "Cell 5", "description": "Description for Cell 5" },
-        { "title": "Cell 6", "description": "Description for Cell 6" },
-        { "title": "Cell 7", "description": "Description for Cell 7" },
-        { "title": "Cell 8", "description": "Description for Cell 8" },
-        { "title": "Cell 9", "description": "Description for Cell 9" },
-        { "title": "Cell 10", "description": "Description for Cell 10" },
-        { "title": "Cell 11", "description": "Description for Cell 11" },
-        { "title": "Cell 12", "description": "Description for Cell 12" },
-        { "title": "Cell 13", "description": "Description for Cell 13" },
-        { "title": "Cell 14", "description": "Description for Cell 14" },
-        { "title": "Cell 15", "description": "Description for Cell 15" },
-        { "title": "Cell 16", "description": "Description for Cell 16" },
-        { "title": "Cell 17", "description": "Description for Cell 17" },
-        { "title": "Cell 18", "description": "Description for Cell 18" },
-        { "title": "Cell 19", "description": "Description for Cell 19" },
-        { "title": "Cell 20", "description": "Description for Cell 20" },
-        { "title": "Cell 21", "description": "Description for Cell 21" },
-        { "title": "Cell 22", "description": "Description for Cell 22" },
-        { "title": "Cell 23", "description": "Description for Cell 23" },
-        { "title": "Cell 24", "description": "Description for Cell 24" },
-        { "title": "Cell 25", "description": "Description for Cell 25" }
-      ]
-    }
+  "2023": {
+    "title": "Fantasy Bingo 2023",
+    "cells": [
+      {
+        "title": "Title with a Title",
+        "description": "Read a book in which the novel title contains a job title, military title, or title of nobility such as locksmith, lieutenant, or lord. HARD MODE: Not a title of royalty."
+      },
+      {
+        "title": "Superheroes",
+        "description": "Story focuses on super powered individuals. HARD MODE: Not related to DC or Marvel."
+      },
+      {
+        "title": "Bottom of the TBR",
+        "description": "Read one of the books that’s been on your To Be Read pile the longest. HARD MODE: None."
+      },
+      {
+        "title": "Magical Realism or Literary Fantasy",
+        "description": "Read a book that portrays magical or unreal elements in an otherwise realistic environment. HARD MODE: Not one of the thirty books in the linked thread."
+      },
+      {
+        "title": "Young Adult",
+        "description": "Read a book that was written for young adults. HARD MODE: Published in the last 5 years."
+      },
+      {
+        "title": "Mundane Jobs",
+        "description": "The protagonist has a commonplace job. HARD MODE: Does not take place on Earth."
+      },
+      {
+        "title": "Published in the 00s",
+        "description": "Read a book that was published between 2000 and 2009. HARD MODE: Not in the top 30 of r/Fantasy’s Best of 2023 List."
+      },
+      {
+        "title": "Angels and Demons",
+        "description": "Story must feature angels or demons in a prominent role. HARD MODE: The protagonist is an angel or demon."
+      },
+      {
+        "title": "Five SFF Short Stories",
+        "description": "Any short SFF story as long as there are five of them. HARD MODE: Read an entire SFF anthology or collection."
+      },
+      {
+        "title": "Horror",
+        "description": "Read a book from the horror genre. HARD MODE: Not Stephen King or H. P. Lovecraft."
+      },
+      {
+        "title": "Self-Published OR Indie Publisher",
+        "description": "Self-published or published through a small, indie publisher. HARD MODE: Self-published and has fewer than 100 ratings on Goodreads."
+      },
+      {
+        "title": "Set in the Middle East/Middle Eastern SFF",
+        "description": "Read a book set in the Middle East or based on Middle Eastern settings. HARD MODE: Author is of Middle Eastern heritage."
+      },
+      {
+        "title": "Published in 2023",
+        "description": "A book published for the first time in 2023. HARD MODE: It's also a debut novel."
+      },
+      {
+        "title": "Multiverse and Alternate Realities",
+        "description": "Read a book in which the setting contains at least two universes. HARD MODE: Characters do not walk through a literal door."
+      },
+      {
+        "title": "POC Author",
+        "description": "Author must be Person of Color. HARD MODE: Novel takes place in a futuristic, sci-fi world."
+      },
+      {
+        "title": "Book Club OR Readalong Book",
+        "description": "Any past or active r/Fantasy book clubs count. HARD MODE: Must read a current selection and participate in the discussion."
+      },
+      {
+        "title": "Novella",
+        "description": "Read a work of fiction of between 17,500 and 40,000 words. HARD MODE: Not published by Tordotcom Publishing."
+      },
+      {
+        "title": "Mythical Beasts",
+        "description": "Read a book that prominently features a mythical beast. HARD MODE: No dragons or dragon-like creatures."
+      },
+      {
+        "title": "Elemental Magic",
+        "description": "Read a book that has elemental magic. HARD MODE: Not V. E. Schwab’s or Jim Butcher’s series."
+      },
+      {
+        "title": "Myths and Retellings",
+        "description": "Read a book based on a myth or preexisting story. HARD MODE: Not Greek or Roman mythology."
+      },
+      {
+        "title": "Queernorm Setting",
+        "description": "A book set in a world where queerness is normalized. HARD MODE: Not a futuristic setting."
+      },
+      {
+        "title": "Coastal or Island Setting",
+        "description": "Story features a major setting near or surrounded by the sea. HARD MODE: The book also features sea-faring."
+      },
+      {
+        "title": "Druids",
+        "description": "A book that heavily features druids. HARD MODE: Not The Iron Druid Chronicles."
+      },
+      {
+        "title": "Featuring Robots",
+        "description": "Read a book that features robots, androids, or automatons. HARD MODE: Robot is the protagonist."
+      },
+      {
+        "title": "Sequel",
+        "description": "Read a book that is a sequel to another SFF book. HARD MODE: Book 3 or on in the series."
+      }
+    ]
   }
-  
+}

@@ -14,9 +14,9 @@
 
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { v4 as uuidv4 } from 'uuid';
 import BingoGrid from './BingoGrid';
 import bingoData from '../bingoData.json'; // Adjust the path as needed
+import {createShareableLink, importSheetData, createNewSheet} from '../utils/storage';
 
 /**
  * A component that give the user a selector of `bingoDataJsonKeys` to choose from
@@ -59,20 +59,7 @@ const BingoSheetsList = () => {
     }, [sheets]);
     
     const addSheet = (selectedKey) => {
-        const data = bingoData[selectedKey];
-        const sheetId = uuidv4();
-        const newSheet = {
-            id: sheetId,
-            title: data.title,
-            cells: data.cells.map((cell) => ({
-                sheetId: sheetId,
-                id: uuidv4(),
-                title: cell.title,
-                description: cell.description,
-                input: '',
-                isHardMode: false,
-            })),
-        };
+        const newSheet = createNewSheet(selectedKey);
         setSheets({ ...sheets, [newSheet.id]: newSheet });
     };
     
@@ -114,6 +101,43 @@ const BingoSheetsList = () => {
         setActiveSheetId(sheetId);
     };
 
+    const handleShareClick = () => {
+        const activeSheetData = sheets[activeSheetId];
+        if (activeSheetData) {
+            const link = createShareableLink(activeSheetData);
+            // Handle the link as needed (e.g., copy to clipboard, display in a modal, etc.)
+            console.log(link); // For testing purposes
+        }
+    };
+
+    useEffect(() => {
+        const sheetsFromStorage = JSON.parse(localStorage.getItem('sheets')) || {};
+        const queryParams = new URLSearchParams(window.location.search);
+        const encodedData = queryParams.get("data");
+
+        if (encodedData) {
+            console.log('Creating sheet from query param', {
+                encodedData,            
+            })
+            const importedSheet = importSheetData(encodedData);
+            console.log('importedSheet', importedSheet)
+            if (importedSheet && !sheetsFromStorage[importedSheet.id]) {
+                // Add the imported sheet if it doesn't already exist
+                const updatedSheets = { ...sheetsFromStorage, [importedSheet.id]: {
+                    ...importedSheet,
+                    title: importedSheet.title + ' (Imported)',
+                }
+            };
+                setSheets(updatedSheets);
+            }
+            window.history.replaceState(null, null, window.location.pathname);
+        } else {
+            // Load sheets from localStorage if no query param
+            setSheets(sheetsFromStorage);
+        }
+    }, []);
+
+
     return (
         <Container>
         <SheetList>
@@ -154,6 +178,9 @@ const BingoSheetsList = () => {
             ))}
         </SheetList>
         <DisplaySheet>
+            <div className="share-icon" onClick={handleShareClick}>
+                Share {/* Replace with an actual icon */}
+            </div>
             {!isCreatingNewSheet && 
                 <BingoGrid 
                     sheetId={activeSheetId} 
@@ -188,9 +215,18 @@ const SheetList = styled.div`
 // Takes up the right side of the screen, about 80% of the width.
 // Goes to the bottom of the screen.
 const DisplaySheet = styled.div`
+    position: relative;
     width: 100%;
     background-color: #000;
     min-height: 100vh;
+
+    .share-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        /* Style your icon here */
+    }
 `;
 
 const DeleteX = styled.div`
