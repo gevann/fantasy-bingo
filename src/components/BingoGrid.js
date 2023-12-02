@@ -91,6 +91,7 @@ const CellFront = styled(({ hasContent, ...props }) => <div {...props} />)`
   height: 100%;
   backface-visibility: hidden;
   display: flex;
+  flex-direction: column; // Stack children vertically
   align-items: center;
   justify-content: center;
   transform: rotateY(0deg);
@@ -114,6 +115,18 @@ const CellTitle = styled.h3`
   margin: 0;
   padding: 0;
   cursor: pointer;
+  font-size: 16px;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+`;
+
+// Should go on a line below the H3 title
+const CellFrontContent = styled.div`
+  font-size: 12px;
+  margin-top: 5px;
+  text-align: center;
+  color: #fff;
 `;
 
 const InfoIcon = styled.span`
@@ -208,6 +221,11 @@ const BingoCell = ({ onInfoClick, cell, updateCell }) => {
           >{cell.title}
             <InfoIcon >ⓘ</InfoIcon>
           </CellTitle>
+          {hasContent && (
+            <CellFrontContent>
+              {cell.input}
+              </CellFrontContent>
+          )}
           <FlipIcon 
             onClick={handleFlipClick}
             onMouseEnter={() => setIsHovered(true)}
