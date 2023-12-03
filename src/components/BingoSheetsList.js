@@ -25,6 +25,7 @@ import {
   uploadData,
   restoreBackUp
 } from '../utils/storage';
+
 import {
   Container,
   SheetList,
@@ -36,7 +37,10 @@ import {
   ModalBackdrop,
   ModalContent,
   CloseButton,
-  CopiableContent
+  CopiableContent,
+  SelectorContainer,
+  StyledSelect,
+  CreateButton
 } from './styled/components';
 
 /**
@@ -44,26 +48,26 @@ import {
  * and a button to create a new sheet with the selected `bingoDataJsonKey`.
  */
 const NewBingoSheetSelector = ({ addSheet }) => {
-    const bingoDataJsonKeys = Object.keys(bingoData);
-    const [selectedKey, setSelectedKey] = useState(bingoDataJsonKeys[0]);
-    
-    return (
-        <div>
-        <div>Create a new bingo sheet:</div>
-        <select
-            value={selectedKey}
-            onChange={(e) => setSelectedKey(e.target.value)}
-        >
-            {bingoDataJsonKeys.map((key) => (
-            <option key={key} value={key}>
-                {key}
-            </option>
-            ))}
-        </select>
-        <button onClick={() => addSheet(selectedKey)}>Create</button>
-        </div>
-    );
+  const bingoDataJsonKeys = Object.keys(bingoData);
+  const [selectedKey, setSelectedKey] = useState(bingoDataJsonKeys[0]);
+
+  return (
+    <SelectorContainer>
+      <StyledSelect
+        value={selectedKey}
+        onChange={(e) => setSelectedKey(e.target.value)}
+      >
+        {bingoDataJsonKeys.map((key) => (
+          <option key={key} value={key}>
+            {key}
+          </option>
+        ))}
+      </StyledSelect>
+      <CreateButton onClick={() => addSheet(selectedKey)}>Create</CreateButton>
+    </SelectorContainer>
+  );
 };
+
 
 const BingoSheetsList = () => {
     

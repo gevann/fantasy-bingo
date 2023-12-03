@@ -352,3 +352,36 @@ export const CopiableContent = styled(({ canCopy, ...props }) => <div {...props}
     justify-content: center;
     align-items: center;
   `;
+
+
+export const SelectorContainer = styled.div`
+  padding: 20px;
+  background: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2); // Optional
+  margin: 20px;
+  text-align: center;
+  width: 80%;
+`;
+
+export const StyledSelect = styled.select`
+  padding: 8px 12px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: white;
+`;
+
+export const CreateButton = styled.button`
+  padding: 8px 15px;
+  background-color: #333; // Adjust for your app's color scheme
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #2b2b2b; // Adjust for hover state
+  }
+`;
