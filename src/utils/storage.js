@@ -12,6 +12,13 @@ export const getSheetsOrDefault = () => {
     return sheetsFromStorage || {};
   };
 
+export const getFirstSheetOrDefault = () => {
+    const sheets = getSheetsOrDefault();
+    const firstSheet = Object.values(sheets)[0];
+    console.log({firstSheet})
+    return firstSheet || { id: null};
+  }
+
 export const exportSheetData = (sheetData) => {
     const minimizedData = prepareDataForExport(sheetData);
     const jsonString = JSON.stringify(minimizedData);

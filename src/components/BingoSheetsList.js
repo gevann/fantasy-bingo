@@ -23,7 +23,8 @@ import {
   storageKeys, 
   getSheetsOrDefault, 
   uploadData,
-  restoreBackUp
+  restoreBackUp,
+  getFirstSheetOrDefault
 } from '../utils/storage';
 
 import {
@@ -115,6 +116,8 @@ const BingoSheetsList = () => {
       } else {
           setSheets(sheetsFromStorage);
       }
+
+      toggleSheet(getFirstSheetOrDefault().id);
   }, []);
 
   useEffect(() => {
@@ -160,6 +163,7 @@ const BingoSheetsList = () => {
 
     // Function to change the active sheet
     const toggleSheet = (sheetId) => {
+        console.log(`Setting active sheet to ${sheetId}`)
         setActiveSheetId(sheetId);
     };
 
@@ -190,6 +194,7 @@ const BingoSheetsList = () => {
         .then(() => {
           alert('Upload successful!');
           setSheets(getSheetsOrDefault());
+          toggleSheet(getFirstSheetOrDefault().id);
         })
         .catch((error) => {
           alert('Upload failed. Please try again.');
@@ -200,6 +205,7 @@ const BingoSheetsList = () => {
     const handleRestore = () => {
       restoreBackUp();
       setSheets(getSheetsOrDefault());
+      toggleSheet(getFirstSheetOrDefault().id)
     }
       
     return (
