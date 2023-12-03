@@ -16,7 +16,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import BingoGrid from './BingoGrid';
 import bingoData from '../bingoData.json'; // Adjust the path as needed
-import {createShareableLink, importSheetData, createNewSheet, downloadData, storageKeys, getSheetsOrDefault, uploadData} from '../utils/storage';
+import {
+  createShareableLink, 
+  importSheetData, 
+  createNewSheet, 
+  downloadData, 
+  storageKeys, 
+  getSheetsOrDefault, 
+  uploadData,
+  restoreBackUp
+} from '../utils/storage';
 
 /**
  * A component that give the user a selector of `bingoDataJsonKeys` to choose from
@@ -156,6 +165,11 @@ const BingoSheetsList = () => {
         });
     }
 
+    const handleRestore = () => {
+      restoreBackUp();
+      setSheets(getSheetsOrDefault());
+    }
+      
     return (
         <Container>
         <SheetList>
@@ -202,7 +216,7 @@ const BingoSheetsList = () => {
             <div className="download-icon" onClick={handleDownload}>
                 Download {/* Replace with an actual icon */}
             </div>
-            <div className="file=upload">
+            <div className="file-upload">
               <label htmlFor="file-upload" className="custom-upload-button">
                 Upload
               </label>
@@ -213,6 +227,9 @@ const BingoSheetsList = () => {
                 onChange={handleUpload}
                 accept=".json"
               />
+            </div>
+            <div className="restore-backup" onClick={handleRestore}>
+              Restore
             </div>
             {!isCreatingNewSheet && 
                 <BingoGrid 
@@ -300,6 +317,16 @@ const DisplaySheet = styled.div`
             transform: scale(1.2)
         }
     }
+
+    .restore-backup {
+      position: absolute;
+        top: 70px;
+        right: 10px;
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.2)
+        }
 `;
 
 const DeleteX = styled.div`

@@ -114,6 +114,16 @@ export const uploadData = (file) => {
     )
 }
 
+export const restoreBackUp = () => {
+    const backup = localStorage.getItem(storageKeys.backup);
+    
+    if (backup && Object.keys(backup).length > 0) {
+        const current = localStorage.getItem(storageKeys.current);
+        localStorage.setItem(storageKeys.backup, current);
+        localStorage.setItem(storageKeys.current, backup);
+    }
+}
+
 const expandCellData = (minimizedCells) => {
     return minimizedCells.map(({ i, h }) => ({
         input: i,
