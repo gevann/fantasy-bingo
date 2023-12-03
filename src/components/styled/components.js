@@ -1,4 +1,28 @@
 import styled from 'styled-components';
+import React from 'react';
+
+/**
+ * Colors
+ */
+// Basic
+const colorRgbaBlack08 = 'rgba(0, 0, 0, 0.8)';
+const colorWhite = '#fff';
+const colorOffWhite = '#a9a9a9';
+const colorOffWhiteBright = '#c8c8c8'
+const colorDarkGray2b2b2b = '#2b2b2b';
+const colorDarkGray303131 = '#303131';
+const colorDarkDarkGray282828 = '#282828';
+const colorTeal = '#025959';
+const colorBlack = '#000';
+const colorDarkGray333 = '#333';
+const colorLightGrayCcc = '#ccc';
+const colorBlue = '#0558b0';
+// By usage
+const colorHighlight = colorBlue;
+const colorBackgroundMain = colorDarkGray2b2b2b;
+const colorBackgroundSecondary = colorBlack;
+const colorFontMain = colorOffWhite;
+const colorFontSecondary = colorOffWhiteBright;
 
 // Styled Components
 export const Grid = styled.div`
@@ -17,7 +41,6 @@ export const GridItem = styled(({ isHovered, ...props }) => <div {...props} />)`
   width: 100%;
   height: 0;
   padding-bottom: 100%;
-  box-shadow: ${props => props.isHovered ? '0px 0px 10px rgba(0, 0, 0, 0.8)' : '0px 0px 8px rgba(0, 0, 0, 0.2)'};
   transform: ${props => props.isHovered ? 'translate(-2px, -2px)' : 'none'};
   transition: transform 0.3s ease-in-out;
 `;
@@ -39,7 +62,7 @@ export const FlipIcon = styled.div`
   right: 10px;
   cursor: pointer;
   font-size: 20px;
-  color: #fff;
+  color: ${colorFontMain};
   cursor: pointer;  
 `;
 
@@ -49,7 +72,7 @@ export const TextArea = styled(({ isEditing, ...props }) => <textarea {...props}
     border: none;
     background: none;
     outline: none;
-    color: #fff;
+    color: ${colorFontMain};
     resize: none; // Disable resizing
     font-size: 16px;
     overflow: auto; // Allow scrolling
@@ -72,15 +95,14 @@ export const CellFront = styled(({ hasContent, ...props }) => <div {...props} />
   border-radius: 10px; // Rounded corners
   backface-visibility: hidden;
   border-radius: 10px;
-  background-color: #2b2b2b;
-  ${props => props.hasContent && `box-shadow: inset 0 0 20px -5px #fff;`}
+  background-color: ${props => props.hasContent ? colorTeal : colorDarkDarkGray282828};
 `;
 
 export const CellBack = styled(CellFront)`
   transform: rotateY(180deg);
-  color: #fff;
+  color: ${colorFontMain};
   transform: rotateY(180deg);
-  background-color: #303131;
+  background-color: ${colorDarkGray303131};
   position: relative;
   padding-top: 20px;
 `;
@@ -90,9 +112,9 @@ export const CellTitle = styled.h3`
   padding: 0;
   cursor: pointer;
   font-size: 16px;
-  color: #fff;
+  color: ${colorFontMain};
   text-align: center;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 0 10px ${colorRgbaBlack08};
 `;
 
 // Should go on a line below the H3 title
@@ -100,7 +122,7 @@ export const CellFrontContent = styled.div`
   font-size: 12px;
   margin-top: 5px;
   text-align: center;
-  color: #fff;
+  color: ${colorFontMain};
 `;
 
 export const InfoIcon = styled.span`
@@ -129,8 +151,8 @@ export const StyledCheckbox = styled.div`
   width: 15px;
   height: 15px;
   position: relative;
-  background: ${props => props.checked ? '#303131' : 'transparent'};
-  border: 2px solid #fff;
+  background: ${props => props.checked ? colorDarkGray303131 : 'transparent'};
+  border: 2px solid ${colorFontMain};
   border-radius: 3px;
   transition: all 150ms;
   cursor: pointer;
@@ -144,8 +166,8 @@ export const FatUnicodeCheckMark = styled(({ checked, ...props }) => <span {...p
     font-size: 24px;
     font-weight: bolder;
     font-family: Arial, sans-serif;
-    color: #fff;
-    shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    color: ${colorFontMain};
+    shadow: 0 0 10px ${colorRgbaBlack08};
 `;
 
 // Container holds the sheet list on the left side of the screen in a row,
@@ -163,6 +185,8 @@ export const SheetList = styled.div`
   flex-direction: column; /* Changed from row to column */
   align-items: center;
   width: 20%; /* Set a fixed width or use percentage */
+  background-color: ${colorBackgroundSecondary};
+  color: ${colorFontSecondary};
 `;
 
 // Takes up the right side of the screen, about 80% of the width.
@@ -170,7 +194,8 @@ export const SheetList = styled.div`
 export const DisplaySheet = styled.div`
     position: relative;
     width: 100%;
-    background-color: #000;
+    background-color: ${colorBackgroundMain};
+    color: ${colorFontMain};
     min-height: 100vh;
 
     .share-icon {
@@ -229,63 +254,93 @@ export const DisplaySheet = styled.div`
 `;
 
 export const DeleteX = styled.div`
-cursor: pointer;
-font-size: 20px;
-font-weight: bold;
-color: #fff;
-cursor: pointer;
-margin-right: 10px;
-
-&:hover {
-    transform: scale(1.2)
-}
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  color: ${colorWhite};
+  cursor: pointer;
+  margin-right: 10px;
+        
+  &:hover {
+      transform: scale(1.2)
+  }
 `;
 
 export const entryHeight = '50px';
 export const entryWidth = '100%';
 
-export const SheetListEntry = styled(({ sheetId, activeSheetId, ...props }) => <div {...props} />)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between; /* Adjusted for space between title and delete button */
-  width: ${entryWidth};
-  height: ${entryHeight};
-  margin-bottom: 10px; /* Margin for spacing between entries */
-  border-radius: 10px;
-  &:hover {
-    background-color: #333;
-  }
-  ${props => props.activeSheetId === props.sheetId && `background-color: #333;`}
-`;
-
-export const NewSheetPlaceHolder = styled.div`
+export const NewSheetPlaceHolder = styled(({ isCreatingNewSheet, ...props }) => <div {...props} />)`
   display: flex;
   align-items: center;
   justify-content: center;
   width: ${entryWidth};
   height: ${entryHeight};
   margin-bottom: 10px; /* Consistent margin with SheetListEntry */
+  ${props => props.isCreatingNewSheet && `background-color: ${colorHighlight};`}
+
   &:hover {
-    background-color: #333;
+    background-color: ${colorHighlight};
   }
 `;
 
-export const SheetTitle = styled(({ xzvlue, isEditing, ...props }) => <textarea {...props} />)`
-    max-height: 100px;
-    border: none;
-    background: none;
-    outline: none;
-    color: #fff;
-    resize: none; // Disable resizing
-    font-size: 16px;
-    overflow: auto; // Allow scrolling
-    margin: 20px; // Add some margin
-    word-wrap: ${props => props.isEditing ? 'none' : 'break-word'};
-    word-break: ${props => props.isEditing ? 'break-all' : 'normal'};
-    white-space: ${props => props.isEditing ? 'pre' : 'normal'};
-    overflow-wrap: ${props => props.isEditing ? 'break-word' : 'normal'};
+export const SheetListEntry = styled(({ sheetId, activeSheetId, ...props }) => <div {...props} />)`
+  display: flex;
+  flex-direction: row;
+  align-items: center; // Centers items vertically in the flex container
+  justify-content: space-between; // Space between title and delete button
+  width: ${entryWidth};
+  height: ${entryHeight};
+  margin: 10px;
+  border-radius: 10px;
+  &:hover {
+    background-color: ${colorHighlight};
+  }
+  ${props => props.activeSheetId === props.sheetId && `background-color: ${colorHighlight};`}
 `;
+
+// export const SheetTitle = styled(({ isEditing, ...props }) => <textarea {...props} />)`
+//     height: auto; // Allows the textarea to grow and shrink
+//     max-height: 20px; // Set this to the line-height or height of your text
+//     // Additional styles for single-line appearance
+//     overflow: hidden; // Hides the overflow text
+//     text-overflow: ellipsis; // Adds an ellipsis for overflow text
+//     white-space: nowrap; // Prevents text wrapping
+//     border: none;
+//     background: none;
+//     outline: none;
+//     color: ${colorWhite};
+//     resize: none; // Disable resizing
+//     font-size: 16px;
+//     margin: 0 20px; // Removed top and bottom margins to allow vertical centering
+//     word-wrap: ${props => props.isEditing ? 'none' : 'break-word'};
+//     word-break: ${props => props.isEditing ? 'break-all' : 'normal'};
+//     white-space: ${props => props.isEditing ? 'pre' : 'nowrap'};
+//     overflow-wrap: ${props => props.isEditing ? 'break-word' : 'normal'};
+// `;
+
+const Textarea = styled.textarea`
+height: auto; // Allows the textarea to grow and shrink
+max-height: 20px; // Set this to the line-height or height of your text
+// Additional styles for single-line appearance
+overflow: hidden; // Hides the overflow text
+text-overflow: ellipsis; // Adds an ellipsis for overflow text
+white-space: nowrap; // Prevents text wrapping
+border: none;
+background: none;
+outline: none;
+color: ${colorWhite};
+resize: none; // Disable resizing
+font-size: 16px;
+margin: 0 20px; // Removed top and bottom margins to allow vertical centering
+word-wrap: ${props => props.isEditing ? 'none' : 'break-word'};
+word-break: ${props => props.isEditing ? 'break-all' : 'normal'};
+white-space: ${props => props.isEditing ? 'pre' : 'nowrap'};
+overflow-wrap: ${props => props.isEditing ? 'break-word' : 'normal'};
+`;
+
+export const SheetTitle = React.forwardRef(({ isEditing, ...props }, ref) => (
+    <Textarea ref={ref} {...props} />
+));
 
 export const CopiableContent = styled(({ canCopy, ...props }) => <div {...props} />)`
     position: relative;
@@ -303,7 +358,7 @@ export const CopiableContent = styled(({ canCopy, ...props }) => <div {...props}
         top: -20px;
         left: 0;
         font-size: 12px;
-        color: #fff;
+        color: ${colorWhite};
         opacity: 0;
         transition: opacity 0.2s ease-in-out;
       }
@@ -326,7 +381,7 @@ export const CopiableContent = styled(({ canCopy, ...props }) => <div {...props}
   
   export const ModalContent = styled(({ canCopy, ...props }) => (<div {...props} />))`
     color: black;
-    background-color: #fff;
+    background-color: ${colorWhite};
     padding: 20px;
     border-radius: 10px;
     position: relative;
@@ -342,7 +397,7 @@ export const CopiableContent = styled(({ canCopy, ...props }) => <div {...props}
     border: none;
     cursor: pointer;
     color: black;
-    background-color: #fff;
+    background-color: ${colorWhite};
     border-radius: 50%;
     width: 30px;
     height: 30px;
@@ -358,7 +413,6 @@ export const SelectorContainer = styled.div`
   padding: 20px;
   background: none;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2); // Optional
   margin: 20px;
   text-align: center;
   width: 80%;
@@ -368,13 +422,13 @@ export const StyledSelect = styled.select`
   padding: 8px 12px;
   margin-right: 10px;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid ${colorLightGrayCcc};
   background-color: white;
 `;
 
 export const CreateButton = styled.button`
   padding: 8px 15px;
-  background-color: #333; // Adjust for your app's color scheme
+  background-color: ${colorDarkGray333}; // Adjust for your app's color scheme
   color: white;
   border: none;
   border-radius: 5px;
@@ -382,6 +436,6 @@ export const CreateButton = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #2b2b2b; // Adjust for hover state
+    background-color: ${colorHighlight}; // Adjust for hover state
   }
 `;

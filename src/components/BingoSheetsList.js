@@ -70,13 +70,19 @@ const NewBingoSheetSelector = ({ addSheet }) => {
 
 
 const BingoSheetsList = () => {
-    
     const [sheets, setSheets] = useState(getSheetsOrDefault());
     const [isEditing, setIsEditing] = useState(false);
     const [isCreatingNewSheet, setIsCreatingNewSheet] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState('');
     const [canCopy, setCanCopy] = useState(false);
+    const textAreaRefs = useRef({});
+
+    const handleSetIsCreatingNewSheet = (value) => {
+      setIsCreatingNewSheet(value);
+      
+      value && toggleSheet(null);
+    };
 
     const openModal = (content, canCopy=false) => {
       setCanCopy(canCopy);
@@ -110,12 +116,22 @@ const BingoSheetsList = () => {
           setSheets(sheetsFromStorage);
       }
   }, []);
+
+  useEffect(() => {
+    if (!isEditing) {
+      Object.values(textAreaRefs.current).forEach((ref) => {
+        if (ref) {
+          ref.scrollLeft = 0;
+        }
+      });
+    }
+  }, [isEditing]);
     
     const addSheet = (selectedKey) => {
         const newSheet = createNewSheet(selectedKey);
         setSheets({ ...sheets, [newSheet.id]: newSheet });
         toggleSheet(newSheet.id);
-        setIsCreatingNewSheet(false);
+        handleSetIsCreatingNewSheet(false);
     };
     
     const deleteSheet = (id) => {
@@ -190,23 +206,24 @@ const BingoSheetsList = () => {
         <Container>
         <SheetList>
             <NewSheetPlaceHolder
-                onClick={() => setIsCreatingNewSheet(true)}
+                isCreatingNewSheet={isCreatingNewSheet}
+                onClick={() => handleSetIsCreatingNewSheet(true)}
             >New</NewSheetPlaceHolder>
             {Object.entries(sheets).map(([sheetId, sheet]) => (
             <SheetListEntry 
                 key={sheetId}
                 onClick={() => {
-                    setIsCreatingNewSheet(false);
+                    handleSetIsCreatingNewSheet(false);
                     toggleSheet(sheetId)}
                 }
                 activeSheetId={activeSheetId}
                 sheetId={sheetId}
             >
                 <SheetTitle
-                    xzvalue={sheet.title}
+                    ref={(el) => (textAreaRefs.current[sheetId] = el)}
                     type="text" 
                     value={sheet.title} 
-                    isEditing={isEditing}
+                    // isEditing={isEditing}
                     onChange={(e) =>
                         updateSheet({ ...sheet, title: e.target.value })
                     }
