@@ -103,5 +103,110 @@
         "description": "Read a book that is a sequel to another SFF book. HARD MODE: Book 3 or on in the series."
       }
     ]
+  },
+  "justForFun": {
+    "title": "r/Fantasy Bingo 2024",
+    "cells": [
+      {
+        "title": "Lost Civilizations",
+        "description": "A book exploring ancient, lost, or forgotten civilizations. HARD MODE: The civilization is not based on popular mythologies."
+      },
+      {
+        "title": "Time Travel",
+        "description": "Read a book featuring time travel. HARD MODE: Time travel to a future era."
+      },
+      {
+        "title": "Enchanted Forest",
+        "description": "A story set in a magical forest. HARD MODE: The forest is a main character."
+      },
+      {
+        "title": "Ghost Stories",
+        "description": "A novel featuring ghosts or spirits. HARD MODE: The protagonist is a ghost."
+      },
+      {
+        "title": "Epic Journey",
+        "description": "A book that involves a grand journey or quest. HARD MODE: The journey spans multiple worlds or dimensions."
+      },
+      {
+        "title": "Hidden Worlds",
+        "description": "Read a book about hidden or secret worlds coexisting with our own. HARD MODE: The hidden world is under our feet."
+      },
+      {
+        "title": "Apocalyptic",
+        "description": "A book set during or after an apocalypse. HARD MODE: The apocalypse is caused by magic."
+      },
+      {
+        "title": "Historical Fantasy",
+        "description": "Fantasy set in a specific historical period. HARD MODE: Set in a non-Western culture."
+      },
+      {
+        "title": "Urban Fantasy",
+        "description": "A modern city setting with magical elements. HARD MODE: The city is a lesser-known, non-capital city."
+      },
+      {
+        "title": "Fairy Tale Retelling",
+        "description": "A retelling of a classic fairy tale. HARD MODE: Not based on European fairy tales."
+      },
+      {
+        "title": "Magical Heist",
+        "description": "Read a book featuring a heist or grand theft in a world where magic plays a crucial role. HARD MODE: The item being stolen is of magical origin and has unique powers."
+      },
+      {
+        "title": "Steampunk",
+        "description": "A book featuring steampunk elements. HARD MODE: Steampunk is not just aesthetic, but crucial to the plot."
+      },
+      {
+        "title": "Witchcraft",
+        "description": "A book prominently featuring witches or warlocks. HARD MODE: The main character is not a witch/warlock but interacts with them."
+      },
+      {
+        "title": "Underwater Adventures",
+        "description": "Read a book set primarily underwater. HARD MODE: Features an underwater civilization."
+      },
+      {
+        "title": "Non-Human Protagonist",
+        "description": "The protagonist of the book is not human. HARD MODE: The protagonist is a mythical creature."
+      },
+      {
+        "title": "Dystopian",
+        "description": "A book set in a dystopian world. HARD MODE: The dystopia is not a result of a war or natural disaster."
+      },
+      {
+        "title": "Space Opera",
+        "description": "Read a grand, dramatic space opera. HARD MODE: The story spans multiple planets and cultures."
+      },
+      {
+        "title": "Alternate History",
+        "description": "A book exploring an alternate historical timeline. HARD MODE: The change in history is due to a magical event."
+      },
+      {
+        "title": "Cyberpunk",
+        "description": "Dive into a cyberpunk setting. HARD MODE: The protagonist is an anti-hero."
+      },
+      {
+        "title": "Parallel Universe",
+        "description": "Read a book involving parallel universes. HARD MODE: The protagonist regularly travels between them."
+      },
+      {
+        "title": "Artificial Intelligence",
+        "description": "A book featuring AI as a key element. HARD MODE: The AI is the main character."
+      },
+      {
+        "title": "Biopunk",
+        "description": "Explore the world of biopunk, focusing on biotechnology. HARD MODE: The biotech is used in unconventional ways."
+      },
+      {
+        "title": "Reverse World",
+        "description": "Read a book set in a world with reverse or unique laws of nature or society, such as time running backward or dreams manifesting as reality. HARD MODE: The protagonist is aware of the reverse world."
+      },
+      {
+        "title": "Culinary Magic",
+        "description": "Enjoy a story where food or cooking has magical properties, like enchanted recipes or culinary wizards. HARD MODE: The main character is a chef or cook in a magical setting."
+      },
+      {
+        "title": "Animal Companions",
+        "description": "A story where the main character has an animal companion. HARD MODE: The animal companion is a mythical creature."
+      }
+    ]
   }
 }
