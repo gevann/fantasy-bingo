@@ -16,7 +16,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import BingoGrid from './BingoGrid';
 import bingoData from '../bingoData.json'; // Adjust the path as needed
-import {createShareableLink, importSheetData, createNewSheet, downloadData} from '../utils/storage';
+import {createShareableLink, importSheetData, createNewSheet, downloadData, storageKeys, getSheetsOrDefault, uploadData} from '../utils/storage';
 
 /**
  * A component that give the user a selector of `bingoDataJsonKeys` to choose from
@@ -45,10 +45,7 @@ const NewBingoSheetSelector = ({ addSheet }) => {
 };
 
 const BingoSheetsList = () => {
-    const getSheetsOrDefault = () => {
-      const sheetsFromStorage = JSON.parse(localStorage.getItem('sheets'));
-      return sheetsFromStorage || {};
-    };
+    
     const [sheets, setSheets] = useState(getSheetsOrDefault());
     const [isEditing, setIsEditing] = useState(false);
     const [isCreatingNewSheet, setIsCreatingNewSheet] = useState(false);
@@ -64,11 +61,11 @@ const BingoSheetsList = () => {
     const closeModal = () => setIsModalOpen(false);
 
     useEffect(() => {
-        localStorage.setItem('sheets', JSON.stringify(sheets));
+        localStorage.setItem(storageKeys.current, JSON.stringify(sheets));
     }, [sheets]);
 
     useEffect(() => {
-      const sheetsFromStorage = JSON.parse(localStorage.getItem('sheets')) || {};
+      const sheetsFromStorage = JSON.parse(localStorage.getItem(storageKeys.current)) || {};
       const queryParams = new URLSearchParams(window.location.search);
       const encodedData = queryParams.get("data");
 
@@ -85,7 +82,6 @@ const BingoSheetsList = () => {
           }
           window.history.replaceState(null, null, window.location.pathname);
       } else {
-          // Load sheets from localStorage if no query param
           setSheets(sheetsFromStorage);
       }
   }, []);
@@ -147,6 +143,19 @@ const BingoSheetsList = () => {
       URL.revokeObjectURL(url); // Clean up to avoid memory leaks
     };
 
+    const handleUpload = (e) => {
+      const file = e.target.files[0];
+      uploadData(file)
+        .then(() => {
+          alert('Upload successful!');
+          setSheets(getSheetsOrDefault());
+        })
+        .catch((error) => {
+          alert('Upload failed. Please try again.');
+          console.error(error);
+        });
+    }
+
     return (
         <Container>
         <SheetList>
@@ -192,6 +201,18 @@ const BingoSheetsList = () => {
             </div>
             <div className="download-icon" onClick={handleDownload}>
                 Download {/* Replace with an actual icon */}
+            </div>
+            <div className="file=upload">
+              <label htmlFor="file-upload" className="custom-upload-button">
+                Upload
+              </label>
+              <input 
+                id="file-upload"
+                className="upload-input" 
+                type="file" 
+                onChange={handleUpload}
+                accept=".json"
+              />
             </div>
             {!isCreatingNewSheet && 
                 <BingoGrid 
@@ -258,6 +279,26 @@ const DisplaySheet = styled.div`
             transform: scale(1.2)
         }
         /* Style your icon here */
+    }
+
+    .upload-input {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+
+    .custom-upload-button {
+      position: absolute;
+        top: 50px;
+        right: 10px;
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.2)
+        }
     }
 `;
 

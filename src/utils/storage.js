@@ -2,8 +2,17 @@ import { deflate, inflate } from 'pako';
 import { v4 as uuidv4 } from 'uuid';
 import bingoData from '../bingoData.json'; // Adjust the path as needed
 
+export const storageKeys = {
+    current: 'sheets',
+    backup: 'sheetsBackup',
+}
+
+export const getSheetsOrDefault = () => {
+    const sheetsFromStorage = JSON.parse(localStorage.getItem(storageKeys.current));
+    return sheetsFromStorage || {};
+  };
+
 export const exportSheetData = (sheetData) => {
-    console.log('sheetData', sheetData)
     const minimizedData = prepareDataForExport(sheetData);
     const jsonString = JSON.stringify(minimizedData);
     const compressed = deflate(jsonString);
@@ -15,7 +24,6 @@ export const exportSheetData = (sheetData) => {
 export const importSheetData = (compressedDataStr) => {
     try {
         const decoded = atob(compressedDataStr);
-        console.log('decoded', decoded)
         const charData = decoded.split(',');
         const binData = Uint8Array.of(...charData);
         const decompressed = inflate(binData, { to: 'string' });
@@ -83,6 +91,28 @@ export const downloadData = (sheets) => {
     const url = URL.createObjectURL(blob);
     return url;
   };
+
+export const uploadData = (file) => {
+    const reader = new FileReader();
+    reader.readAsText(file);
+    return new Promise((resolve, reject) => {
+        reader.onload = () => {
+            try {
+                // First, copy the current sheets (if any) to a backup in local storage
+                const currentSheets = getSheetsOrDefault();
+                localStorage.setItem(storageKeys.backup, JSON.stringify(currentSheets));
+
+                // Then, parse the uploaded data and save it to local storage
+                const sheets = JSON.parse(reader.result);
+                localStorage.setItem(storageKeys.current, JSON.stringify(sheets));
+                resolve();
+            } catch (error) {
+                reject(error);
+            }
+        }
+    }
+    )
+}
 
 const expandCellData = (minimizedCells) => {
     return minimizedCells.map(({ i, h }) => ({
