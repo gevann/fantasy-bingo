@@ -77,6 +77,12 @@ export const createNewSheet = (key) => {
     return newSheet;
 }
 
+export const downloadData = (sheets) => {
+    const sheetsData = JSON.stringify(sheets, null, 2); // Format for readability
+    const blob = new Blob([sheetsData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    return url;
+  };
 
 const expandCellData = (minimizedCells) => {
     return minimizedCells.map(({ i, h }) => ({

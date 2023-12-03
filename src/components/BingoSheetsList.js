@@ -16,7 +16,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import BingoGrid from './BingoGrid';
 import bingoData from '../bingoData.json'; // Adjust the path as needed
-import {createShareableLink, importSheetData, createNewSheet} from '../utils/storage';
+import {createShareableLink, importSheetData, createNewSheet, downloadData} from '../utils/storage';
 
 /**
  * A component that give the user a selector of `bingoDataJsonKeys` to choose from
@@ -136,6 +136,17 @@ const BingoSheetsList = () => {
         }
     };
 
+    const handleDownload = () => {
+      const url = downloadData(getSheetsOrDefault());
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'MyBingoSheets.json'; // Name of the file
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url); // Clean up to avoid memory leaks
+    };
+
     return (
         <Container>
         <SheetList>
@@ -178,6 +189,9 @@ const BingoSheetsList = () => {
         <DisplaySheet>
             <div className="share-icon" onClick={handleShareClick}>
                 Share {/* Replace with an actual icon */}
+            </div>
+            <div className="download-icon" onClick={handleDownload}>
+                Download {/* Replace with an actual icon */}
             </div>
             {!isCreatingNewSheet && 
                 <BingoGrid 
@@ -227,6 +241,22 @@ const DisplaySheet = styled.div`
         top: 10px;
         right: 10px;
         cursor: pointer;
+
+        &:hover {
+          transform: scale(1.2)
+      }
+        /* Style your icon here */
+    }
+
+    .download-icon {
+        position: absolute;
+        top: 30px;
+        right: 10px;
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.2)
+        }
         /* Style your icon here */
     }
 `;
