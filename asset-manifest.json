@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/fantasy-bingo/static/css/main.545c9a90.css",
+    "main.js": "/fantasy-bingo/static/js/main.5fa35aa4.js",
+    "index.html": "/fantasy-bingo/index.html",
+    "main.545c9a90.css.map": "/fantasy-bingo/static/css/main.545c9a90.css.map",
+    "main.5fa35aa4.js.map": "/fantasy-bingo/static/js/main.5fa35aa4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.545c9a90.css",
+    "static/js/main.5fa35aa4.js"
+  ]
+}
