@@ -45,7 +45,11 @@ const NewBingoSheetSelector = ({ addSheet }) => {
 };
 
 const BingoSheetsList = () => {
-    const [sheets, setSheets] = useState({});
+    const getSheetsOrDefault = () => {
+      const sheetsFromStorage = JSON.parse(localStorage.getItem('sheets'));
+      return sheetsFromStorage || {};
+    };
+    const [sheets, setSheets] = useState(getSheetsOrDefault());
     const [isEditing, setIsEditing] = useState(false);
     const [isCreatingNewSheet, setIsCreatingNewSheet] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,15 +62,33 @@ const BingoSheetsList = () => {
       setIsModalOpen(true);
     };  
     const closeModal = () => setIsModalOpen(false);
-    
-    useEffect(() => {
-        const sheets = JSON.parse(localStorage.getItem('sheets')) || {};
-        setSheets(sheets);
-    }, []);
-    
+
     useEffect(() => {
         localStorage.setItem('sheets', JSON.stringify(sheets));
     }, [sheets]);
+
+    useEffect(() => {
+      const sheetsFromStorage = JSON.parse(localStorage.getItem('sheets')) || {};
+      const queryParams = new URLSearchParams(window.location.search);
+      const encodedData = queryParams.get("data");
+
+      if (encodedData) {
+          const importedSheet = importSheetData(encodedData);
+          if (importedSheet && !sheetsFromStorage[importedSheet.id]) {
+              // Add the imported sheet if it doesn't already exist
+              const updatedSheets = { ...sheetsFromStorage, [importedSheet.id]: {
+                  ...importedSheet,
+                  title: importedSheet.title + ' (Imported)',
+              }
+          };
+              setSheets(updatedSheets);
+          }
+          window.history.replaceState(null, null, window.location.pathname);
+      } else {
+          // Load sheets from localStorage if no query param
+          setSheets(sheetsFromStorage);
+      }
+  }, []);
     
     const addSheet = (selectedKey) => {
         const newSheet = createNewSheet(selectedKey);
@@ -101,14 +123,6 @@ const BingoSheetsList = () => {
 
     // Function to change the active sheet
     const toggleSheet = (sheetId) => {
-        console.log(`toggling sheet ${JSON.stringify(sheetId)}`)
-        // console the sheet's data
-        const sheet = sheets[sheetId];
-        if (!sheet) {
-            console.log(`no sheet found with id ${sheetId}`)
-        } else {
-            console.log("sheetData", JSON.stringify(sheet))
-        }
         setActiveSheetId(sheetId);
     };
 
@@ -117,35 +131,10 @@ const BingoSheetsList = () => {
         if (activeSheetData) {
             const link = createShareableLink(activeSheetData);
             // Handle the link as needed (e.g., copy to clipboard, display in a modal, etc.)
-            console.log(link); // For testing purposes
             const canCopy = !!navigator.clipboard;
             openModal(link, canCopy)
         }
     };
-
-    useEffect(() => {
-        const sheetsFromStorage = JSON.parse(localStorage.getItem('sheets')) || {};
-        const queryParams = new URLSearchParams(window.location.search);
-        const encodedData = queryParams.get("data");
-
-        if (encodedData) {
-            const importedSheet = importSheetData(encodedData);
-            if (importedSheet && !sheetsFromStorage[importedSheet.id]) {
-                // Add the imported sheet if it doesn't already exist
-                const updatedSheets = { ...sheetsFromStorage, [importedSheet.id]: {
-                    ...importedSheet,
-                    title: importedSheet.title + ' (Imported)',
-                }
-            };
-                setSheets(updatedSheets);
-            }
-            window.history.replaceState(null, null, window.location.pathname);
-        } else {
-            // Load sheets from localStorage if no query param
-            setSheets(sheetsFromStorage);
-        }
-    }, []);
-
 
     return (
         <Container>

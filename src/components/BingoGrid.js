@@ -2,12 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const BingoGrid = ({ sheetId, sheet, updateCell, onInfoClick }) => {
-//   const gridItems = bingoData[year]?.cells || [];
-    const gridItems = sheet?.cells || [];
-
-    console.log('BingoGrid sheet', sheet);
-    console.log('BingoGrid sheetId', sheetId);
-
+  const gridItems = sheet?.cells || [];
   return (
     <Grid>
       {gridItems.map((cell, index) => (
